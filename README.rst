@@ -36,14 +36,13 @@ in your ``settings.py`` with the following:
     ]
 
 And replace the Django Rest Framework ``SessionAuthentication``
-class with:
+class with ``SessionTokenAuthentication``:
 
 .. code-block:: python
 
     REST_FRAMEWORK = {
         'DEFAUlT_AUTHENTICATION_CLASSES': [
-            'rest_framework.authentication.SessionTokenAuthentication',
-            'rest_framework.authentication.BasicAuthentication'
+            'session_token.authentication.SessionTokenAuthentication',
         ]
     }
 
