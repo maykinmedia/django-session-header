@@ -22,8 +22,10 @@ class SessionTokenMiddleware(SessionMiddleware):
         self.SessionStore = SessionStore
 
     def process_request(self, request):
-        session_token = request.META.get('HTTP_X_SESSION_TOKEN')
         session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+        session_token = request.META.get('HTTP_X_SESSION_TOKEN')
+        if session_token:
+            session_key = None
         request.session = self.SessionStore(session_key, session_token)
 
     def process_response(self, request, response):
