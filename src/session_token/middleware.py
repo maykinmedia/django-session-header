@@ -4,6 +4,7 @@ import string
 from django.conf import settings
 from django.core.cache import caches
 from django.utils.crypto import get_random_string
+from django.middleware.csrf import CsrfViewMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
 
 VALID_KEY_CHARS = string.ascii_lowercase + string.digits
@@ -35,6 +36,14 @@ class SessionTokenMiddleware(SessionMiddleware):
         return response
 
 
+class SessionTokenCsrfViewMiddleware(CsrfViewMiddleware):
+    def process_request(self, request):
+        if request.session.loaded_from_session_token():
+            return
+        supr = super(SessionTokenCsrfViewMiddleware, self)
+        return supr.process_request(request)
+
+
 class SessionTokenStore(object):
     """
     Extend any SessionStore class with SessionToken behavior.
@@ -45,8 +54,14 @@ class SessionTokenStore(object):
     def __init__(self, session_key=None, session_token=None):
         self.__session_token_cache = caches[settings.SESSION_CACHE_ALIAS]
         self.__session_token_saved = False
-        self.session_token = session_token
+        self.__session_token = self.session_token = session_token
         super(SessionTokenStore, self).__init__(session_key)
+
+    def loaded_from_session_token(self):
+        """
+        Determine if this request was loaded via session token.
+        """
+        return bool(self.__session_token)
 
     def get_session_token(self):
         """

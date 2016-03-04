@@ -32,6 +32,7 @@ in your ``settings.py`` with the following:
 
     MIDDLEWARE_CLASSES = [
        # ...
+       # 'django.contrib.session.middleware.SessionMiddleware',
        'session_token.middleware.SessionTokenMiddleware',
     ]
 
@@ -42,11 +43,32 @@ class with ``SessionTokenAuthentication``:
 
     REST_FRAMEWORK = {
         'DEFAUlT_AUTHENTICATION_CLASSES': [
+            # ...
+            # 'rest_framework.authentication.SessionAuthentication',
             'session_token.authentication.SessionTokenAuthentication',
         ]
     }
 
-Finally, in order to use the template tag, you must add the
+To obtain the session token to put in the body of the request,
+call ``request.session.get_session_token()``.
+If the token doesn't already exist,
+it will dynamically create one.
+
+To check if a session wa obtained via session token,
+call ``request.session.loaded_from_session_token()``.
+You can use this to conditionally apply CSRF protection.
+Or, if you prefer, you can replace Django's normal CSRF middleware
+with ``session_token.middleware.SessionTokenCsrfViewMiddleware``:
+
+.. code-block:: python
+
+    MIDDLEWARE_CLASSES = [
+        # ...
+        # 'django.middleware.csrf.CsrfViewMiddleware',
+        'session_token.middleware.SessionTokenCsrfViewMiddleware',
+    ]
+
+In order to use the template tag, you must add the
 app to ``INSTALLED_APPS``:
 
 .. code-block:: python
