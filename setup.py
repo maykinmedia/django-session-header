@@ -1,17 +1,14 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
-    name='django-session-token',
+    name='django-session-header',
     version='0.0',
-    description='cookieless sessions for Django',
+    description='Identify the session through a header',
     author='Ryan Hiebert',
     author_email='ryan@ryanhiebert.com',
-    url='https://github.com/ryanhiebert/django-session-token',
+    url='https://github.com/ryanhiebert/django-session-header',
     package_dir={'': 'src'},
-    packages=[
-        'session_token',
-        'session_token.templatetags',
-    ],
+    packages=find_packages('src'),
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
