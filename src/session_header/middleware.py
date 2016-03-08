@@ -11,31 +11,19 @@ class SessionMiddleware(middleware.SessionMiddleware):
 
     def process_request(self, request):
         super(SessionMiddleware, self).process_request(request)
-
-        session_header = request.META.get('HTTP_X_SESSIONID')
-        if session_header:
-            request.session = self.SessionStore(
-                session_header, from_header=True)
+        sessionid = request.META.get('HTTP_X_SESSIONID')
+        if sessionid:
+            request.session = self.SessionStore(sessionid)
+            request.session.csrf_exempt = True
 
 
 class CsrfViewMiddleware(csrf.CsrfViewMiddleware):
     def process_request(self, request):
-        if request.session.loaded_from_header():
-            return
-        super(CsrfViewMiddleware, self).process_request(request)
+        if not request.session.csrf_exempt:
+            super(CsrfViewMiddleware, self).process_request(request)
 
 
 class SessionHeaderMixin(object):
-    """
-    Extend any SessionStore class with SessionHeader behavior.
-    """
-
-    def __init__(self, session_key=None, from_header=False):
+    def __init__(self, session_key=None):
         super(SessionHeaderMixin, self).__init__(session_key)
-        self.__from_header = from_header
-
-    def loaded_from_header(self):
-        """
-        Determine if this request was loaded via session header.
-        """
-        return bool(self.__from_header)
+        self.csrf_exempt = False

@@ -49,8 +49,8 @@ class with ``session_header.authentication.SessionAuthentication``:
         ]
     }
 
-To check if a session was obtained via session header,
-call ``request.session.loaded_from_header()``.
+If a session was obtained via a session header,
+then ``request.session.csrf_exempt`` will be ``True``.
 You can use this to conditionally apply CSRF protection.
 Or, if you prefer, you can replace Django's normal CSRF middleware
 with ``session_header.middleware.CsrfViewMiddleware``:
