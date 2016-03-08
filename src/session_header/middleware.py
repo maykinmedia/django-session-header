@@ -6,13 +6,8 @@ from django.contrib.sessions import middleware
 class SessionMiddleware(middleware.SessionMiddleware):
     def __init__(self):
         super(SessionMiddleware, self).__init__()
-
-        class SessionStore(SessionHeaderStore, self.SessionStore):
-            """
-            A Subclassed Session Store with with extra abilities.
-            """
-
-        self.SessionStore = SessionStore
+        bases = (SessionHeaderMixin, self.SessionStore)
+        self.SessionStore = type('SessionStore', bases, {})
 
     def process_request(self, request):
         super(SessionMiddleware, self).process_request(request)
@@ -30,14 +25,14 @@ class CsrfViewMiddleware(csrf.CsrfViewMiddleware):
         super(CsrfViewMiddleware, self).process_request(request)
 
 
-class SessionHeaderStore(object):
+class SessionHeaderMixin(object):
     """
     Extend any SessionStore class with SessionHeader behavior.
     """
 
     def __init__(self, session_key=None, from_header=False):
+        super(SessionHeaderMixin, self).__init__(session_key)
         self.__from_header = from_header
-        super(SessionHeaderStore, self).__init__(session_key)
 
     def loaded_from_header(self):
         """
