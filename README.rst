@@ -62,3 +62,7 @@ with ``session_header.middleware.CsrfViewMiddleware``:
         # 'django.middleware.csrf.CsrfViewMiddleware',
         'session_header.middleware.CsrfViewMiddleware',
     ]
+
+The ``sessionid`` will be available in the ``X-SessionID`` response header,
+and you can now set the ``X-SessionID`` header on the request manually
+to avoid needing cookies to power your sessions.

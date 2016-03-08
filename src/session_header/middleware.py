@@ -16,6 +16,13 @@ class SessionMiddleware(middleware.SessionMiddleware):
             request.session = self.SessionStore(sessionid)
             request.session.csrf_exempt = True
 
+    def process_response(self, request, response):
+        supr = super(SessionMiddleware, self)
+        response = supr.process_response(request, response)
+        if request.session.session_key:
+            response['X-SessionID'] = request.session.session_key
+        return response
+
 
 class CsrfViewMiddleware(csrf.CsrfViewMiddleware):
     def process_request(self, request):
