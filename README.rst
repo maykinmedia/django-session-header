@@ -49,11 +49,6 @@ class with ``session_header.authentication.SessionAuthentication``:
         ]
     }
 
-To obtain the session token to put in the body of the request,
-call ``request.session.get_sessionid()``.
-If the token doesn't already exist,
-it will dynamically create one.
-
 To check if a session was obtained via session header,
 call ``request.session.loaded_from_header()``.
 You can use this to conditionally apply CSRF protection.
@@ -67,28 +62,3 @@ with ``session_header.middleware.CsrfViewMiddleware``:
         # 'django.middleware.csrf.CsrfViewMiddleware',
         'session_header.middleware.CsrfViewMiddleware',
     ]
-
-In order to use the template tag, you must add the
-app to ``INSTALLED_APPS``:
-
-.. code-block:: python
-
-    INSTALLED_APPS = [
-        # ...
-        'session_header',
-    ]
-
-And use the template tag in your templates like so:
-
-.. code-block::
-
-    {% load session_header %}
-    <html data-sessionid="{% sessionid %}"></html>
-
-Then when making your AJAX requests, just include the
-``X-SessionID`` header, with that value, which you
-can get using jQuery:
-
-.. code-block::
-
-    var sessionToken = $('html').data('sessionid')

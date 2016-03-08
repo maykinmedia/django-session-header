@@ -10,6 +10,6 @@ class SessionAuthentication(SessionAuthentication):
         """
         Don't enforce CSRF if using a session_token.
         """
-        if request.session.loaded_from_session_header():
+        if request.session.loaded_from_header():
             return
         super(SessionAuthentication, self).enforce_csrf(self, request)

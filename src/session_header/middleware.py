@@ -9,7 +9,7 @@ class SessionMiddleware(middleware.SessionMiddleware):
 
         class SessionStore(SessionHeaderStore, self.SessionStore):
             """
-            A Subclassed Session Store with Session Token abilities.
+            A Subclassed Session Store with with extra abilities.
             """
 
         self.SessionStore = SessionStore
@@ -44,11 +44,3 @@ class SessionHeaderStore(object):
         Determine if this request was loaded via session header.
         """
         return bool(self.__from_header)
-
-    def get_sessionid(self):
-        """
-        Get the current session token, or create a new one.
-        """
-        if not self.session_key:
-            self.create()
-        return self.session_key
