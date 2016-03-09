@@ -8,7 +8,7 @@ class SessionAuthentication(SessionAuthentication):
 
     def enforce_csrf(self, request):
         """
-        Don't enforce CSRF if using a session_token.
+        Don't enforce CSRF if using a session header.
         """
         if not request.session.csrf_exempt:
-            super(SessionAuthentication, self).enforce_csrf(self, request)
+            super(SessionAuthentication, self).enforce_csrf(request)
