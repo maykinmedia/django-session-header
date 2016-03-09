@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from django.middleware import csrf
 from django.contrib.sessions import middleware
 
@@ -11,7 +10,7 @@ class SessionMiddleware(middleware.SessionMiddleware):
 
     def process_request(self, request):
         super(SessionMiddleware, self).process_request(request)
-        sessionid = request.META.get('HTTP_X_SESSIONID')
+        sessionid = request.META.get(u'HTTP_X_SESSIONID')
         if sessionid:
             request.session = self.SessionStore(sessionid)
             request.session.csrf_exempt = True
