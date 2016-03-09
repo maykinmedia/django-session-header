@@ -24,9 +24,10 @@ class SessionMiddleware(middleware.SessionMiddleware):
 
 
 class CsrfViewMiddleware(csrf.CsrfViewMiddleware):
-    def process_request(self, request):
+    def process_view(self, request, *args, **kwargs):
         if not request.session.csrf_exempt:
-            super(CsrfViewMiddleware, self).process_request(request)
+            supr = super(CsrfViewMiddleware, self)
+            return supr.process_view(request, *args, **kwargs)
 
 
 class SessionHeaderMixin(object):

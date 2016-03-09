@@ -42,3 +42,26 @@ class TestSessionMiddleware(object):
         request.session['spam'] = 'eggs'
         response = middleware.process_response(request, response)
         assert 'X-SessionID' in response
+
+
+class TestCsrfViewMiddleware(object):
+    def test_process_request_normal(self, rf):
+        """CSRF should block if no header."""
+        session_middleware = session_header.middleware.SessionMiddleware()
+        csrf_middleware = session_header.middleware.CsrfViewMiddleware()
+        request = rf.post('/')
+        session_middleware.process_request(request)
+        view = lambda r: HttpResponse()
+        response = csrf_middleware.process_view(request, view, (), {})
+        assert response is not None
+
+    def test_process_request_exempt(self, rf):
+        """CSRF should not block if header is present."""
+        session_middleware = session_header.middleware.SessionMiddleware()
+        csrf_middleware = session_header.middleware.CsrfViewMiddleware()
+        request = rf.post('/')
+        request.META['HTTP_X_SESSIONID'] = 'abcdefghijklmnopqrstuvwxyz'
+        session_middleware.process_request(request)
+        view = lambda r: HttpResponse()
+        response = csrf_middleware.process_view(request, view, (), {})
+        assert response is None
