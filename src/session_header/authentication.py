@@ -11,4 +11,4 @@ class SessionAuthentication(SessionAuthentication):
         Don't enforce CSRF if using a session header.
         """
         if not request.session.csrf_exempt:
-            super(SessionAuthentication, self).enforce_csrf(request)
+            return super(SessionAuthentication, self).enforce_csrf(request)
