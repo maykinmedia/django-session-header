@@ -3,8 +3,8 @@ from django.contrib.sessions import middleware
 
 
 class SessionMiddleware(middleware.SessionMiddleware):
-    def __init__(self):
-        super(SessionMiddleware, self).__init__()
+    def __init__(self, get_response=None):
+        super(SessionMiddleware, self).__init__(get_response)
         bases = (SessionHeaderMixin, self.SessionStore)
         self.SessionStore = type('SessionStore', bases, {})
 
