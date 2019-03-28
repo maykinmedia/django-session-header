@@ -2,3 +2,6 @@
 *.egg-info/
 .cache/
 .tox/
+.vscode/
+/.coverage
+/dist/

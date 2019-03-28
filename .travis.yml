@@ -1,12 +1,11 @@
-sudo: false
+dist: xenial
 language: python
 python:
-  - "2.7"
-  - "3.5"
-install: pip install tox-travis
-script: tox
-branches:
-  only:
-    - master
-matrix:
+  - "3.6"
+  - "3.7"
+install:
+  - pip install poetry
+  - poetry install -E drf
+script: poetry run pytest --cov
+jobs:
   fast_finish: true

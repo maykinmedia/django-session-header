@@ -33,11 +33,11 @@ in your ``settings.py`` with the following:
     MIDDLEWARE_CLASSES = [
        # ...
        # 'django.contrib.session.middleware.SessionMiddleware',
-       'session_header.middleware.SessionMiddleware',
+       'django_session_header.middleware.SessionMiddleware',
     ]
 
 And replace the Django Rest Framework ``SessionAuthentication``
-class with ``session_header.authentication.SessionAuthentication``:
+class with ``django_session_header.authentication.SessionAuthentication``:
 
 .. code-block:: python
 
@@ -45,7 +45,7 @@ class with ``session_header.authentication.SessionAuthentication``:
         'DEFAUlT_AUTHENTICATION_CLASSES': [
             # ...
             # 'rest_framework.authentication.SessionAuthentication',
-            'session_header.authentication.SessionAuthentication',
+            'django_session_header.authentication.SessionAuthentication',
         ]
     }
 
@@ -53,14 +53,14 @@ If a session was obtained via a session header,
 then ``request.session.csrf_exempt`` will be ``True``.
 You can use this to conditionally apply CSRF protection.
 Or, if you prefer, you can replace Django's normal CSRF middleware
-with ``session_header.middleware.CsrfViewMiddleware``:
+with ``django_session_header.middleware.CsrfViewMiddleware``:
 
 .. code-block:: python
 
     MIDDLEWARE_CLASSES = [
         # ...
         # 'django.middleware.csrf.CsrfViewMiddleware',
-        'session_header.middleware.CsrfViewMiddleware',
+        'django_session_header.middleware.CsrfViewMiddleware',
     ]
 
 The ``sessionid`` will be available in the ``X-SessionID`` response header,
