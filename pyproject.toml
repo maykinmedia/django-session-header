@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-session-header"
-version = "1.0"
+version = "1.0.1"
 description = "Identify the Django Session by a Header"
 authors = ["Ryan Hiebert <ryan@ryanhiebert.com>"]
 license = "MIT"
@@ -10,7 +10,7 @@ include = ["*.rst", "tests/*.py"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-django = "^2.1"
+django = "^1.11"
 djangorestframework = { version = "^3.9", optional = true }
 
 [tool.poetry.dev-dependencies]
